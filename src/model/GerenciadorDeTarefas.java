@@ -1,7 +1,9 @@
 package model;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class GerenciadorDeTarefas {
 
@@ -12,14 +14,29 @@ public class GerenciadorDeTarefas {
     }
 
     // adicionar uma nova tarefa
-    public void adicionarTarefa(String titulo, String descricao, String prioridade, boolean concluida) {
-        Tarefa tarefa = new Tarefa(titulo, descricao, prioridade, concluida);
+    public void adicionarTarefa(String titulo, String descricao, String prioridade, LocalDate data, boolean concluida) {
+        Tarefa tarefa = new Tarefa(titulo, descricao, prioridade, data, concluida);
         tarefas.add(tarefa);
     }
 
     // listar todas as tarefas 
     public List<Tarefa> listarTarefas() {
         return new ArrayList<>(tarefas);
+    }
+    
+    // Filtro por dia
+    public List<Tarefa> listarTarefasPorDia(LocalDate dia) {
+        return tarefas.stream()
+                .filter(t -> t.getData().isEqual(dia))
+                .collect(Collectors.toList());
+    }
+
+    // Filtro para período de 7 dias
+    public List<Tarefa> listarTarefasPorSemana(LocalDate dataInicio) {
+        LocalDate dataFim = dataInicio.plusDays(6); // 7 dias incluindo o inicial
+        return tarefas.stream()
+                .filter(t -> !t.getData().isBefore(dataInicio) && !t.getData().isAfter(dataFim))
+                .collect(Collectors.toList());
     }
 
     // buscar tarefa por id
@@ -33,12 +50,13 @@ public class GerenciadorDeTarefas {
     }
 
     // atualizar uma tarefa existente
-    public boolean atualizarTarefa(int id, String titulo, String descricao, String prioridade, boolean concluida) {
+    public boolean atualizarTarefa(int id, String titulo, String descricao, String prioridade, LocalDate data, boolean concluida) {
         Tarefa tarefa = buscarTarefaPorId(id);
         if (tarefa != null) {
             tarefa.setTitulo(titulo);
             tarefa.setDescricao(descricao);
             tarefa.setPrioridade(prioridade);
+            tarefa.setData(data);
             tarefa.setConcluida(concluida);
 
             return true;

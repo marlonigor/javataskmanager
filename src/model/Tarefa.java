@@ -1,6 +1,8 @@
 
 package model;
 
+import java.time.LocalDate;
+
 
 public class Tarefa {
     private final int id;
@@ -9,14 +11,16 @@ public class Tarefa {
     private String descricao;
     private String prioridade;
     private boolean concluida;
+    private LocalDate data; 
     
     //Método Construtor 
-    public Tarefa (String titulo, String descricao, String prioridade, boolean concluida){
+    public Tarefa (String titulo, String descricao, String prioridade, LocalDate data, boolean concluida){
         this.id = contadorId++;
         this.titulo = titulo;
         this.descricao = descricao;
         this.prioridade = prioridade;
         this.concluida = concluida;
+        this.data = data;
     }
 
     public int getId() {
@@ -50,9 +54,17 @@ public class Tarefa {
     public boolean isConcluida() {
         return concluida;
     }
+    
+    public LocalDate getData(){
+        return data;
+    }
 
     public void setConcluida(boolean concluida) {
         this.concluida = concluida;
+    }
+    
+    public void setData(LocalDate data){
+        this.data = data;
     }
 
     @Override
@@ -62,6 +74,7 @@ public class Tarefa {
                 ", titulo=" + titulo + '\'' +
                 ", descricao=" + descricao + '\'' +
                 ", prioridade=" + prioridade + '\'' +
+                ", data=" + data + '\'' +
                 ", concluida=" + concluida + '}';
     }
     
